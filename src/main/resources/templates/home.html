@@ -3,11 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Forum</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-    <h1>Moi</h1>
-    
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Matkailuforum</h1>
+
+        <div th:each="thread : ${threads}" class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${thread.title}">Thread Title</h5>
+                <p class="card-text">
+                    <span>Date Created: </span>
+                    <span th:text="${thread.startDay}"></span>
+                    <span> | Messages: </span>
+                    <span th:text="${thread.messages}"></span>
+                    <span> Created by: (findUserById -> username)</span>
+                </p>
+            </div>
+
+        </div>
+        <a th:href="@{/matka}" class="btn btn-danger">Takaisin Forumiin</a>
+
+    </div>
 </body>
 </html>
