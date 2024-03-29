@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+
+    <title>Add Thread</title>
+</head>
+<body>
+
+<h2>New Thread</h2>
+
+<form th:action="@{/add}" th:object="${thread}" method="post">
+    <label for="title">Thread Title:</label>
+    <input type="text" id="title" name="title" required><br>
+
+    <input type="hidden" id="startDay" name="startDay" th:value="${T(java.time.LocalDateTime).now()}">
+
+    <label for="category">Category:</label>
+    <select id="category" name="category">
+        <option th:each="category : ${categories}" th:value="${category.categoryid}" th:text="${category.name}"></option>
+    </select>
+
+    <button class="btn btn-success" type="submit">Add Thread</button>
+</form>
+
+
+</body>
+</html>

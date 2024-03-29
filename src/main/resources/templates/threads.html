@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Threads</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4" th:text="${category.name}">Category Name</h1>
+
+  
+
+    <div th:each="thread : ${category.threads}" class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${thread.title}">Thread Title</h5>
+            <p class="card-text">
+                <span>Date Created: </span>
+                <span th:text="${#temporals.format(thread.startDay, 'dd.MM.yyyy HH:mm:ss')}"></span>
+                <span> | Messages: </span>
+                <span th:text="${thread.messages}"></span>
+                <span> | Created by: (findUserById -> username) |</span>
+                <a th:href="@{'/category/' + ${thread.category.categoryid}}" th:text="${thread.category.name} ?: ''">Category</a>
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<a th:href="@{/matka}" class="btn btn-danger">Takaisin Forumiin</a>
+
+</body>
+</html>

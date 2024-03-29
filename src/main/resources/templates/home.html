@@ -16,10 +16,11 @@
                 <h5 class="card-title" th:text="${thread.title}">Thread Title</h5>
                 <p class="card-text">
                     <span>Date Created: </span>
-                    <span th:text="${thread.startDay}"></span>
+                    <span th:text="${#temporals.format(thread.startDay, 'dd.MM.yyyy HH:mm:ss')}"></span>
                     <span> | Messages: </span>
                     <span th:text="${thread.messages}"></span>
                     <span> Created by: (findUserById -> username)</span>
+                    <span th:text="${thread.category} ? ${thread.category.name} : '' ">category</span>
                 </p>
             </div>
 
