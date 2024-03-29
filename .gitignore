@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# ignores macs DS_store
+**/.DS_Store
