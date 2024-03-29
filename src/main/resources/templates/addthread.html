@@ -9,22 +9,27 @@
 </head>
 <body>
 
-<h2>New Thread</h2>
+    <div class="container mt-4">
+        <h2 class="text-center mt-4 mb-4">New Thread</h2>
 
-<form th:action="@{/add}" th:object="${thread}" method="post">
-    <label for="title">Thread Title:</label>
-    <input type="text" id="title" name="title" required><br>
+        <form th:action="@{/add}" th:object="${thread}" method="post">
+            <div class="form-group">
+                <label for="title">Thread Title:</label>
+                <input type="text" id="title" name="title" class="form-control" required>
+            </div>
 
-    <input type="hidden" id="startDay" name="startDay" th:value="${T(java.time.LocalDateTime).now()}">
+            <input type="hidden" id="startDay" name="startDay" th:value="${T(java.time.LocalDateTime).now()}">
 
-    <label for="category">Category:</label>
-    <select id="category" name="category">
-        <option th:each="category : ${categories}" th:value="${category.categoryid}" th:text="${category.name}"></option>
-    </select>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" name="category" class="form-control">
+                    <option th:each="category : ${categories}" th:value="${category.categoryid}" th:text="${category.name}"></option>
+                </select>
+            </div>
 
-    <button class="btn btn-success" type="submit">Add Thread</button>
-</form>
-
+            <button class="btn btn-primary" type="submit">Add Thread</button>
+        </form>
+    </div>
 
 </body>
 </html>

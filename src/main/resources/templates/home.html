@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
 
@@ -19,8 +19,8 @@
                     <span th:text="${#temporals.format(thread.startDay, 'dd.MM.yyyy HH:mm:ss')}"></span>
                     <span> | Messages: </span>
                     <span th:text="${thread.messages}"></span>
-                    <span> Created by: (findUserById -> username)</span>
-                    <span th:text="${thread.category} ? ${thread.category.name} : '' ">category</span>
+                    <span> | Created by: (findUserById -> username) |</span>
+                    <a th:href="@{'/category/' + ${thread.category.categoryid}}" th:text="${thread.category.name} ?: ''">Category</a>
                 </p>
             </div>
 

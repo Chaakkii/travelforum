@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Category Threads</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
 
@@ -26,10 +26,11 @@
             </p>
         </div>
     </div>
+<a th:href="@{/matka}" class="btn btn-danger">Takaisin Forumiin</a>
+<a th:href="@{'/addthread?categoryid=' + ${category.categoryid}}" class="btn btn-primary">Add Thread</a>
 
 </div>
 
-<a th:href="@{/matka}" class="btn btn-danger">Takaisin Forumiin</a>
 
 </body>
 </html>

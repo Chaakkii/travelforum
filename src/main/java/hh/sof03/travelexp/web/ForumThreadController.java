@@ -50,13 +50,13 @@ public class ForumThreadController {
        
         threadRepository.save(forumThread);
 
-        return "redirect:threads";
+        return "redirect:/threads";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteThread(@PathVariable Long id, Model model) {
         threadRepository.deleteById(id);
-        return "redirect:home";
+        return "redirect:/threads";
     }
     
     
