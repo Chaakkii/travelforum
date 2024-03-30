@@ -24,6 +24,7 @@ public class Category {
     private Long categoryId;
 
     private String name;
+    private String description;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<ForumThread> threads;
@@ -36,16 +37,25 @@ public class Category {
         this.name = name;
     }
 
-    public Long getCategoryid() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryid(Long categoryid) {
-        this.categoryId = categoryid;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public Category(String name) {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Category(String name, String description) {
         this.name = name;
+        this.description = description;
     }
 
     public Category() {
@@ -63,7 +73,7 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category [name=" + name + "]";
+        return "Category [name=" + name + ", description=" + description + "]";
     }
 
   

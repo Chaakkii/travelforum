@@ -36,6 +36,8 @@ public class CategoryController {
     @GetMapping(value = "/category/{categoryId}")
     public String findByCategoryid(@PathVariable("categoryId") Long categoryId, Model model) {
         Optional<Category> category = categoryRepository.findById(categoryId);
+
+        
         model.addAttribute("category", category.orElse(null));
     
         return "threads";

@@ -14,10 +14,13 @@
         <div th:each="category : ${categories}" class="card mb-3">
             <div class="card-body">
                 <h5 class="card-title">
-                    <a th:href="@{'/category/' + ${category.categoryid}}" th:text="${category.name}">Thread Title</a>
+                    <a th:href="@{'/category/' + ${category.categoryId}}" th:text="${category.name}">Thread Title</a>
                 </h5>
+                <span th:text="${category.description}">Thread Desc</span>
             </div>
         </div>
+        <a th:href="@{/threads}" class="btn btn-danger">Kaikki ketjut</a>
+
     </div>
 </body>
 </html>

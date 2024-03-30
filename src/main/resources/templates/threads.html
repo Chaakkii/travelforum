@@ -20,14 +20,14 @@
                 <span>Date Created: </span>
                 <span th:text="${#temporals.format(thread.startDay, 'dd.MM.yyyy HH:mm:ss')}"></span>
                 <span> | Messages: </span>
-                <span th:text="${thread.messages}"></span>
+            
                 <span> | Created by: (findUserById -> username) |</span>
-                <a th:href="@{'/category/' + ${thread.category.categoryid}}" th:text="${thread.category.name} ?: ''">Category</a>
+                <a th:href="@{'/category/' + ${thread.category.categoryId}}" th:text="${thread.category.name} ?: ''">Category</a>
             </p>
         </div>
     </div>
 <a th:href="@{/matka}" class="btn btn-danger">Takaisin Forumiin</a>
-<a th:href="@{'/addthread?categoryid=' + ${category.categoryid}}" class="btn btn-primary">Add Thread</a>
+<a th:href="@{'/addthread?categoryid=' + ${category.categoryId}}" class="btn btn-primary">Add Thread</a>
 
 </div>
 

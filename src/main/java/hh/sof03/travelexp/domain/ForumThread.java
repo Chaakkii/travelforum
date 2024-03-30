@@ -21,16 +21,15 @@ public class ForumThread {
     private Long id;
     private String title;
     private LocalDateTime startDay;
-    private int messages;
 
     @ManyToOne
     @JsonIgnoreProperties("threads")
+    @JoinColumn(name = "categoryId")
     private Category category;
 
-    public ForumThread(String title, LocalDateTime startDay, int messages, Category category) {
+    public ForumThread(String title, LocalDateTime startDay, Category category) {
         this.title = title;
         this.startDay = LocalDateTime.now();
-        this.messages = messages;
         this.category = category;
     }
 
@@ -50,12 +49,6 @@ public class ForumThread {
     public void setStartDay(LocalDateTime startDay) {
         this.startDay = startDay;
     }
-    public int getMessages() {
-        return messages;
-    }
-    public void setMessages(int messages) {
-        this.messages = messages;
-    }
 
     public Category getCategory() {
         return category;
@@ -66,7 +59,7 @@ public class ForumThread {
     }
     @Override
     public String toString() {
-        return "Threads [title=" + title + ", startDay=" + startDay + ", messages=" + messages + "category =" + this.getCategory() + "]";
+        return "Threads [title=" + title + ", startDay=" + startDay + ", category =" + this.getCategory() + "]";
     }
 
 

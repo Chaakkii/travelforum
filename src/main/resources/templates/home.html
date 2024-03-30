@@ -9,7 +9,7 @@
 <body>
 
     <div class="container mt-4">
-        <h1 class="text-center mb-4">Matkailuforum</h1>
+        <h1 class="text-center mb-4">Kaikki viestiketjut</h1>
 
         <div th:each="thread : ${threads}" class="card mb-3">
             <div class="card-body">
@@ -18,9 +18,9 @@
                     <span>Date Created: </span>
                     <span th:text="${#temporals.format(thread.startDay, 'dd.MM.yyyy HH:mm:ss')}"></span>
                     <span> | Messages: </span>
-                    <span th:text="${thread.messages}"></span>
+                    
                     <span> | Created by: (findUserById -> username) |</span>
-                    <a th:href="@{'/category/' + ${thread.category.categoryid}}" th:text="${thread.category.name} ?: ''">Category</a>
+                    <a th:href="@{'/category/' + ${thread.category.categoryId}}" th:text="${thread.category.name} ?: ''">Category</a>
                 </p>
             </div>
 

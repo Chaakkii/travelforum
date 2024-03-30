@@ -32,9 +32,9 @@ public class TravelexpApplication {
 	public CommandLineRunner demo(CategoryRepository categoryRepository, ThreadRepository threadRepository) {
 		return (args) -> {
 			log.info("Few cateogry");
-			Category cat1 = new Category("Menneet matkat");
-			Category cat2 = new Category("MM2024");
-			Category cat3 = new Category("Seurajoukkue matkat");
+			Category cat1 = new Category("Menneet matkat", "Menneiden matkojen muistolle");
+			Category cat2 = new Category("MM2024", "Kesäks kisoihi?");
+			Category cat3 = new Category("Seurajoukkue matkat", "Valioliiga, LaLiga, Bundesliiga, Serie A tai Ligue 1?");
 
 			categoryRepository.save(cat1);
 			categoryRepository.save(cat2);
@@ -57,9 +57,9 @@ public class TravelexpApplication {
 
 
 
-        	threads.add(new ForumThread("Ranskan matka", startDay, 10, cat1));
-       		threads.add(new ForumThread("Kiinan matka", startDay, 15, cat2));
-        	threads.add(new ForumThread("Hollannin matka", startDay, 12, cat3));
+        	threads.add(new ForumThread("Ranskan matka", startDay, cat1));
+       		threads.add(new ForumThread("Kiinan matka", startDay, cat2));
+        	threads.add(new ForumThread("Hollannin matka", startDay, cat3));
 
 			threadRepository.saveAll(threads);
 

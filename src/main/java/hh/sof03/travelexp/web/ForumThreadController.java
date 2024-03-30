@@ -1,6 +1,10 @@
 package hh.sof03.travelexp.web;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,8 +36,16 @@ public class ForumThreadController {
     @GetMapping(value ="/threads")
     public String loadFrontPage(Model model) {
 
-        model.addAttribute("threads", threadRepository.findAll());
+        List<ForumThread> threads = (List<ForumThread>) threadRepository.findAll();
 
+        Collections.sort(threads, new Comparator<ForumThread>() {
+        @Override
+        public int compare(ForumThread t1, ForumThread t2) {
+            return t2.getStartDay().compareTo(t1.getStartDay());
+        }
+    });
+
+    model.addAttribute("threads", threads);
 
         return "home"; //home.html
     }
