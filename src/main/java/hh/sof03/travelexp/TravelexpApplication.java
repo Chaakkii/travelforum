@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,8 @@ import hh.sof03.travelexp.domain.Category;
 import hh.sof03.travelexp.domain.CategoryRepository;
 import hh.sof03.travelexp.domain.ThreadRepository;
 import hh.sof03.travelexp.domain.ForumThread;
+import hh.sof03.travelexp.domain.Message;
+import hh.sof03.travelexp.domain.MessageRepository;
 
 @SpringBootApplication
 public class TravelexpApplication {
@@ -29,7 +32,7 @@ public class TravelexpApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(CategoryRepository categoryRepository, ThreadRepository threadRepository) {
+	public CommandLineRunner demo(CategoryRepository categoryRepository, ThreadRepository threadRepository, MessageRepository messageRepository) {
 		return (args) -> {
 			log.info("Few cateogry");
 			Category cat1 = new Category("Menneet matkat", "Menneiden matkojen muistolle");

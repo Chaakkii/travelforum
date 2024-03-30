@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thread Comments</title>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div class="container mt-4">
+
+    <h1 class="text-center mb-4" th:text="${thread.title}">Thread Title</h1>
+
+    <div class="card mb-3">
+
+        <div class="card-body">
+
+            <h5 class="card-title">Comments</h5>
+            <div th:each="comment : ${comments}">
+                <div class="border-bottom mb-3">
+                    <p><strong>Message Time:</strong> <span th:text="${#temporals.format(comment.messageTime, 'yyyy-MM-dd HH:mm:ss')}">Message Time</span></p>
+                    <p th:text="${comment.content}">Comment Content</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Add a Comment</h5>
+            <form th:action="@{/saveComment}" method="post">
+                <input type="hidden" name="id" th:value="${id}" />
+                <div class="form-group">
+                    <label for="content">Comment:</label>
+                    <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Comment</button>
+            </form>
+            
+        </div>
+        
+    </div>
+    <a th:href="@{/matka}" class="btn btn-danger">Takaisin Forumiin</a>
+
+</div>
+
+</body>
+</html>

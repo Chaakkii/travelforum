@@ -17,6 +17,7 @@
                     <a th:href="@{'/category/' + ${category.categoryId}}" th:text="${category.name}">Thread Title</a>
                 </h5>
                 <span th:text="${category.description}">Thread Desc</span>
+                <p><strong>Threads:</strong> <span th:text="${category.threads.size()}"></span></p>
             </div>
         </div>
         <a th:href="@{/threads}" class="btn btn-danger">Kaikki ketjut</a>

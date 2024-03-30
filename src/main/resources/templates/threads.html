@@ -15,12 +15,12 @@
 
     <div th:each="thread : ${category.threads}" class="card mb-3">
         <div class="card-body">
-            <h5 class="card-title" th:text="${thread.title}">Thread Title</h5>
+            <h5 class="card-title"><a th:href="@{'/thread/' + ${thread.id} + '/comments'}" th:text="${thread.title}">Thread Title</a></h5>
             <p class="card-text">
                 <span>Date Created: </span>
-                <span th:text="${#temporals.format(thread.startDay, 'dd.MM.yyyy HH:mm:ss')}"></span>
+                <span th:text="${#temporals.format(thread.startDay, 'dd.MM.yyyy HH:mm')}"></span>
                 <span> | Messages: </span>
-            
+                <span th:text="${thread.messages.size()}"></span>
                 <span> | Created by: (findUserById -> username) |</span>
                 <a th:href="@{'/category/' + ${thread.category.categoryId}}" th:text="${thread.category.name} ?: ''">Category</a>
             </p>

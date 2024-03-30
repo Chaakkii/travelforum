@@ -1,15 +1,18 @@
 package hh.sof03.travelexp.domain;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,14 +30,33 @@ public class ForumThread {
     @JoinColumn(name = "categoryId")
     private Category category;
 
+    @OneToMany(mappedBy = "forumThread", cascade = CascadeType.ALL)
+    private List<Message> messages;
+
     public ForumThread(String title, LocalDateTime startDay, Category category) {
         this.title = title;
-        this.startDay = LocalDateTime.now();
+        this.startDay = startDay;
         this.category = category;
     }
 
     public ForumThread() {
     
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 
     public String getTitle() {

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.ui.Model;
 
 import hh.sof03.travelexp.domain.CategoryRepository;
 import hh.sof03.travelexp.domain.ForumThread;
+import hh.sof03.travelexp.domain.Message;
+import hh.sof03.travelexp.domain.MessageRepository;
 import hh.sof03.travelexp.domain.ThreadRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +34,8 @@ public class ForumThreadController {
     private ThreadRepository threadRepository;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private MessageRepository messageRepository;
 
 
     @GetMapping(value ="/threads")
@@ -49,6 +54,23 @@ public class ForumThreadController {
 
         return "home"; //home.html
     }
+
+    @GetMapping("/thread/{id}/comments")
+    public String showComments(@PathVariable("id") Long id, Model model) {
+        ForumThread thread = threadRepository.findById(id).orElse(null);
+        if (thread != null) {
+            List<Message> comments = thread.getMessages(); // Olettaen, että viestit tallennetaan ForumThread-oliolle
+            
+        
+            
+            model.addAttribute("thread", thread);
+            model.addAttribute("comments", comments);
+            
+            return "threadcomments";
+    }
+    return "error";
+}
+
 
     @GetMapping(value="/addthread")
     public String newThread(Model model) {
