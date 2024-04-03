@@ -17,7 +17,6 @@ import hh.sof03.travelexp.domain.Message;
 import hh.sof03.travelexp.domain.MessageRepository;
 import hh.sof03.travelexp.domain.ThreadRepository;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class MessageController {
@@ -72,6 +71,8 @@ public class MessageController {
     @GetMapping("/deletemessage/{id}")
     public String deleteComment(@PathVariable ("id") Long messageId, Model model) {
         messageRepository.deleteById(messageId);
+
+      
         return "redirect:/thread/" + messageId + "/comments";
     }
 }
