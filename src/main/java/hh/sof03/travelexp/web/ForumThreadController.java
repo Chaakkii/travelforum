@@ -1,6 +1,7 @@
 package hh.sof03.travelexp.web;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -59,7 +60,7 @@ public class ForumThreadController {
     public String showComments(@PathVariable("id") Long id, Model model) {
         ForumThread thread = threadRepository.findById(id).orElse(null);
         if (thread != null) {
-            List<Message> comments = thread.getMessages(); // Olettaen, että viestit tallennetaan ForumThread-oliolle
+            List<Message> comments = thread.getMessages();
             
         
             
@@ -80,10 +81,18 @@ public class ForumThreadController {
     }
 
     @PostMapping("/add")
-    public String addNewThread(@ModelAttribute("thread") ForumThread forumThread) {
-       
-        threadRepository.save(forumThread);
+    public String addNewThread(@ModelAttribute("thread") ForumThread forumThread, @RequestParam("comment") String commentContent) {
+       Message comment = new Message();
 
+       comment.setContent(commentContent);
+       comment.setMessageTime(LocalDateTime.now());
+
+       Message savedComment = messageRepository.save(comment);
+
+       ForumThread newThread = forumThread;
+       newThread.addMessage(savedComment);
+
+    threadRepository.save(newThread);
         return "redirect:/threads";
     }
 

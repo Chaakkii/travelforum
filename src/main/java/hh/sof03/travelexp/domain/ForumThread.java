@@ -1,6 +1,7 @@
 package hh.sof03.travelexp.domain;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -37,9 +38,11 @@ public class ForumThread {
         this.title = title;
         this.startDay = startDay;
         this.category = category;
+        this.messages = new ArrayList<>();
     }
 
     public ForumThread() {
+        this.messages =  new ArrayList<>();
     
     }
 
@@ -79,6 +82,12 @@ public class ForumThread {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public void addMessage(Message message) {
+        this.messages.add(message);
+        message.setForumThread(this);
+    }
+
     @Override
     public String toString() {
         return "Threads [title=" + title + ", startDay=" + startDay + ", category =" + this.getCategory() + "]";

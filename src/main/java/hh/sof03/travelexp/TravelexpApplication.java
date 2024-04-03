@@ -1,13 +1,9 @@
 package hh.sof03.travelexp;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,22 +45,36 @@ public class TravelexpApplication {
 			categories.add(cat2);
 			categories.add(cat3);
 			
-
 			List<ForumThread> threads = new ArrayList<ForumThread>();
 
        		LocalDateTime startDay = LocalDateTime.now();
-
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-
-			String formattedDateTime = startDay.format(formatter);
-
-
 
         	threads.add(new ForumThread("Ranskan matka", startDay, cat1));
        		threads.add(new ForumThread("Kiinan matka", startDay, cat2));
         	threads.add(new ForumThread("Hollannin matka", startDay, cat3));
 
 			threadRepository.saveAll(threads);
+
+			ForumThread thread1 = threadRepository.findById(1L).orElse(null);
+			if (thread1 != null) {
+				threadRepository.save(thread1);
+				Message comment1 = new Message("Ranskassa oli niin kivaa! Eiffel torni oli tosi siisti!", thread1);
+				messageRepository.save(comment1);
+			}
+	
+			ForumThread thread2 = threadRepository.findById(2L).orElse(null);
+			if (thread2 != null) {
+				threadRepository.save(thread2);
+				Message comment2 = new Message("Kiina on aivan aikaansa edellä! Upeannäköistä ja niin futuristinen!", thread2);
+				messageRepository.save(comment2);
+			}
+	
+			ForumThread thread3 = threadRepository.findById(3L).orElse(null);
+			if (thread3 != null) {
+				threadRepository.save(thread3);
+				Message comment3 = new Message("Hollanti, varsinkin Amsterdam, on melko nopeasti koluttu läpi muutamassa päivässä. Aivan turistihintaa kaikkialla!", thread3);
+				messageRepository.save(comment3);
+			}
 
 			log.info("Fetch all threads");
 			for (ForumThread thread : threadRepository.findAll()) {
@@ -74,6 +84,11 @@ public class TravelexpApplication {
 			log.info("Fetch all categories");
 			for (Category category : categoryRepository.findAll()) {
 				log.info(category.toString());
+			}
+
+			log.info("Fetch all messages");
+			for (Message message : messageRepository.findAll()) {
+				log.info(message.toString());
 			}
 
 

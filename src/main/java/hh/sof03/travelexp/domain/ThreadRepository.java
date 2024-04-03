@@ -7,6 +7,8 @@ import java.util.List;
 public interface ThreadRepository extends CrudRepository<ForumThread, Long> {
 
     List<ForumThread> findByTitle(String title);
+
+    List<ForumThread> findByCategory(Category category);
     
 
 
