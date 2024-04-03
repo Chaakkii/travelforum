@@ -32,8 +32,8 @@ public class TravelexpApplication {
 		return (args) -> {
 			log.info("Few cateogry");
 			Category cat1 = new Category("Menneet matkat", "Menneiden matkojen muistolle");
-			Category cat2 = new Category("MM2024", "Kesäks kisoihi?");
-			Category cat3 = new Category("Seurajoukkue matkat", "Valioliiga, LaLiga, Bundesliiga, Serie A tai Ligue 1?");
+			Category cat2 = new Category("EM2024", "Jalkapallon euroopan mestaruuskisat 2024 Saksassa");
+			Category cat3 = new Category("Seurajoukkuematkat", "Valioliiga, LaLiga, Bundesliiga, Serie A tai Ligue 1?");
 
 			categoryRepository.save(cat1);
 			categoryRepository.save(cat2);
@@ -49,30 +49,30 @@ public class TravelexpApplication {
 
        		LocalDateTime startDay = LocalDateTime.now();
 
-        	threads.add(new ForumThread("Ranskan matka", startDay, cat1));
-       		threads.add(new ForumThread("Kiinan matka", startDay, cat2));
-        	threads.add(new ForumThread("Hollannin matka", startDay, cat3));
+        	threads.add(new ForumThread("Saksan matka", startDay, cat1));
+       		threads.add(new ForumThread("Kisamatka Saksaan?", startDay, cat2));
+        	threads.add(new ForumThread("Seurajoukkuejalkapalloreissu?", startDay, cat3));
 
 			threadRepository.saveAll(threads);
 
 			ForumThread thread1 = threadRepository.findById(1L).orElse(null);
 			if (thread1 != null) {
 				threadRepository.save(thread1);
-				Message comment1 = new Message("Ranskassa oli niin kivaa! Eiffel torni oli tosi siisti!", thread1);
+				Message comment1 = new Message("Hyvä matka oli tuo reissu Berliinii, upee kaupunki!", thread1);
 				messageRepository.save(comment1);
 			}
 	
 			ForumThread thread2 = threadRepository.findById(2L).orElse(null);
 			if (thread2 != null) {
 				threadRepository.save(thread2);
-				Message comment2 = new Message("Kiina on aivan aikaansa edellä! Upeannäköistä ja niin futuristinen!", thread2);
+				Message comment2 = new Message("Mitähä siellä saksassa tekiskään, ku jalkapalloo kattoo kesällä jos sais lippuja. Miten ois?", thread2);
 				messageRepository.save(comment2);
 			}
 	
 			ForumThread thread3 = threadRepository.findById(3L).orElse(null);
 			if (thread3 != null) {
 				threadRepository.save(thread3);
-				Message comment3 = new Message("Hollanti, varsinkin Amsterdam, on melko nopeasti koluttu läpi muutamassa päivässä. Aivan turistihintaa kaikkialla!", thread3);
+				Message comment3 = new Message("Pitäskö tossa syksyllä käyä joku reissu tekee kattoo hyvää palloo tonne eurooppaan, esimerkiks vaik espanjaan?", thread3);
 				messageRepository.save(comment3);
 			}
 

@@ -45,16 +45,15 @@ public class MessageController {
             message.setForumThread(thread);
             messageRepository.save(message);
         }
-        return "redirect:/thread/" + id + "/comments"; // Redirect to the thread comments page
+        return "redirect:/thread/" + id + "/comments";
     }
 
     @GetMapping("/comments/{id}")
     public String showComments(@PathVariable("id") Long id, Model model) {
         ForumThread thread = threadRepository.findById(id).orElse(null);
         if (thread != null) {
-            List<Message> comments = thread.getMessages(); // Olettaen, että viestit tallennetaan ForumThread-oliolle
+            List<Message> comments = thread.getMessages(); 
 
-            // Muotoillaan viestien ajat
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             List<String> formattedMessageTimes = new ArrayList<>();
             for (Message comment : comments) {
@@ -68,5 +67,11 @@ public class MessageController {
             model.addAttribute("formattedMessageTimes", formattedMessageTimes);
         }
         return "comments";
+    }
+
+    @GetMapping("/deletemessage/{id}")
+    public String deleteComment(@PathVariable ("id") Long messageId, Model model) {
+        messageRepository.deleteById(messageId);
+        return "redirect:/thread/" + messageId + "/comments";
     }
 }

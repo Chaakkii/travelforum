@@ -38,25 +38,9 @@ public class CategoryController {
     public String findByCategoryid(@PathVariable("categoryId") Long categoryId, Model model) {
         Optional<Category> category = categoryRepository.findById(categoryId);
 
-        if (category.isPresent()) {
-            Category foundCategory = category.get();
-            List<ForumThread> threads = threadRepository.findByCategory(foundCategory);
-
-            Collections.sort(threads, new Comparator<ForumThread>() {
-                @Override
-                public int compare(ForumThread t1, ForumThread t2) {
-                    return t2.getStartDay().compareTo(t1.getStartDay());
-                }
-            });
-
-            model.addAttribute("category", foundCategory);
-            model.addAttribute("threads", threads);
-
-            return "threads"; // threads.html -sivun näyttäminen
-        } else {
-            // Kategoriaa ei löytynyt
-            return "error"; // error.html -sivun näyttäminen
-        }
+        model.addAttribute("category", category.orElse(null));
+    
+        return "threads";
     }
-
+    
 }

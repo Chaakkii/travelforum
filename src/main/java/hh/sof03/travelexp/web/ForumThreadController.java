@@ -96,10 +96,10 @@ public class ForumThreadController {
         return "redirect:/threads";
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/deletethread/{id}")
     public String deleteThread(@PathVariable Long id, Model model) {
         threadRepository.deleteById(id);
-        return "redirect:/threads";
+        return "redirect:/category/" + id;
     }
     
     

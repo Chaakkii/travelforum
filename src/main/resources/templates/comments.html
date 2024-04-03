@@ -10,7 +10,7 @@
     <div th:each="comment : ${comments}">
         <div>
             <p><strong>Content:</strong> <span th:text="${comment.content}"></span></p>
-            <p><strong>Message Time</strong> <span th:text="${#temporals.format(comment.messageTime, 'yyyy-MM-dd')} + ' klo ' + ${#temporals.format(comment.messageTime, 'HH:mm')}">Päivämäärä ja aika</span></p>
+            <p><strong>Message Time</strong> <span th:text="${#temporals.format(comment.messageTime, 'yyyy-MM-dd')} + ' klo ' + ${#temporals.format(comment.messageTime, 'HH:mm:ss')}">Päivämäärä ja aika</span></p>
         </div>
         <hr>
     </div>
