@@ -20,7 +20,13 @@
                     <span> | Messages: </span>
                     <span th:text="${thread.messages.size()}"></span>
 
-                    <span> | Created by: (findUserById -> username) |</span>
+                    <span> | Created by: </span>
+                    <span th:if="${thread.messages != null and not #lists.isEmpty(thread.messages) and thread.messages[0].user != null}">
+                        <span th:text="${thread.messages[0].user.username}"></span>
+                    </span>
+                    <span th:unless="${thread.messages != null and not #lists.isEmpty(thread.messages) and thread.messages[0].user != null}">Unknown User</span>
+                    
+                    <span> |</span>
                     <a th:href="@{'/category/' + ${thread.category.categoryId}}" th:text="${thread.category.name} ?: ''">Category</a>
                 </p>
             </div>

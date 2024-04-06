@@ -18,6 +18,7 @@
             <div th:each="comment : ${comments}">
                 <div class="border-bottom mb-3">
                     <p><strong>Message Time:</strong> <span th:text="${#temporals.format(comment.messageTime, 'yyyy-MM-dd HH:mm:ss')}">Message Time</span></p>
+                   <strong> <p th:text="${comment?.user?.username}"></p></strong>
                     <p th:text="${comment.content}">Comment Content</p>
 
                     <a th:href="@{/deletemessage/{id}(id=${comment.messageId})}" class="btn btn-danger">Poista viesti</a>

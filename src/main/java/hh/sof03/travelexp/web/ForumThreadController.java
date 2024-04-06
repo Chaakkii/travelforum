@@ -1,6 +1,7 @@
 package hh.sof03.travelexp.web;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -16,6 +17,9 @@ import hh.sof03.travelexp.domain.ForumThread;
 import hh.sof03.travelexp.domain.Message;
 import hh.sof03.travelexp.domain.MessageRepository;
 import hh.sof03.travelexp.domain.ThreadRepository;
+import hh.sof03.travelexp.domain.User;
+import hh.sof03.travelexp.domain.UserRepository;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -32,6 +36,8 @@ public class ForumThreadController {
     private CategoryRepository categoryRepository;
     @Autowired
     private MessageRepository messageRepository;
+    @Autowired
+    private UserRepository userRepository;
 
 
     @GetMapping(value ="/threads")
@@ -58,10 +64,14 @@ public class ForumThreadController {
             List<Message> comments = thread.getMessages();
             
         
-            
+            List<User> users = new ArrayList<>();
+            for (Message comment : comments) {
+                users.add(comment.getUser());
+            }
             model.addAttribute("thread", thread);
             model.addAttribute("comments", comments);
-            
+            model.addAttribute("users", users);
+                        
             return "threadcomments";
     }
     return "error";

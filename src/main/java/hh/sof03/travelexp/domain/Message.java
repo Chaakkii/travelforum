@@ -23,11 +23,16 @@ public class Message {
     @ManyToOne
     private ForumThread forumThread;
 
+    @ManyToOne
+    private User user;
+
     
-    public Message(String content, ForumThread forumThread) {
+    public Message(String content, ForumThread forumThread, User user) {
         this.content = content;
         this.forumThread = forumThread;
         this.messageTime = LocalDateTime.now();
+        this.user = user;
+
     }
 
     public Message() {
@@ -64,9 +69,17 @@ public class Message {
         this.messageTime = messageTime;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
-        return "Message [content=" + content + ", messageTime=" + messageTime + "]";
+        return "Message [content=" + content + ", messageTime=" + messageTime + ", user=" + user + "]";
     }
 
     

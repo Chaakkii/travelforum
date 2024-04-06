@@ -47,7 +47,7 @@ public class MessageController {
         return "redirect:/thread/" + id + "/comments";
     }
 
-    @GetMapping("/comments/{id}")
+    @GetMapping("/comments/{id}") // ehkä turha, testimielessä silloin.
     public String showComments(@PathVariable("id") Long id, Model model) {
         ForumThread thread = threadRepository.findById(id).orElse(null);
         if (thread != null) {

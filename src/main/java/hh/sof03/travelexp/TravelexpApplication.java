@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Bean;
 import hh.sof03.travelexp.domain.Category;
 import hh.sof03.travelexp.domain.CategoryRepository;
 import hh.sof03.travelexp.domain.ThreadRepository;
+import hh.sof03.travelexp.domain.User;
+import hh.sof03.travelexp.domain.UserRepository;
 import hh.sof03.travelexp.domain.ForumThread;
 import hh.sof03.travelexp.domain.Message;
 import hh.sof03.travelexp.domain.MessageRepository;
@@ -28,7 +30,7 @@ public class TravelexpApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(CategoryRepository categoryRepository, ThreadRepository threadRepository, MessageRepository messageRepository) {
+	public CommandLineRunner demo(CategoryRepository categoryRepository, ThreadRepository threadRepository, MessageRepository messageRepository, UserRepository userRepository) {
 		return (args) -> {
 			log.info("Few cateogry");
 			Category cat1 = new Category("Menneet matkat", "Menneiden matkojen muistolle");
@@ -55,24 +57,30 @@ public class TravelexpApplication {
 
 			threadRepository.saveAll(threads);
 
+			User user1 = new User("username123", "user", "user@user.com", "user");
+
+			userRepository.save(user1);
+
+
+
 			ForumThread thread1 = threadRepository.findById(1L).orElse(null);
 			if (thread1 != null) {
 				threadRepository.save(thread1);
-				Message comment1 = new Message("Hyvä matka oli tuo reissu Berliinii, upee kaupunki!", thread1);
+				Message comment1 = new Message("Hyvä matka oli tuo reissu Berliinii, upee kaupunki!", thread1, user1);
 				messageRepository.save(comment1);
 			}
 	
 			ForumThread thread2 = threadRepository.findById(2L).orElse(null);
 			if (thread2 != null) {
 				threadRepository.save(thread2);
-				Message comment2 = new Message("Mitähä siellä saksassa tekiskään, ku jalkapalloo kattoo kesällä jos sais lippuja. Miten ois?", thread2);
+				Message comment2 = new Message("Mitähä siellä saksassa tekiskään, ku jalkapalloo kattoo kesällä jos sais lippuja. Miten ois?", thread2, user1);
 				messageRepository.save(comment2);
 			}
 	
 			ForumThread thread3 = threadRepository.findById(3L).orElse(null);
 			if (thread3 != null) {
 				threadRepository.save(thread3);
-				Message comment3 = new Message("Pitäskö tossa syksyllä käyä joku reissu tekee kattoo hyvää palloo tonne eurooppaan, esimerkiks vaik espanjaan?", thread3);
+				Message comment3 = new Message("Pitäskö tossa syksyllä käyä joku reissu tekee kattoo hyvää palloo tonne eurooppaan, esimerkiks vaik espanjaan?", thread3, user1);
 				messageRepository.save(comment3);
 			}
 
