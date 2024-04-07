@@ -57,16 +57,19 @@ public class TravelexpApplication {
 
 			threadRepository.saveAll(threads);
 
-			User user1 = new User("username123", "user", "user@user.com", "user");
+			User user1 = new User("user", "$2a$10$hkfH/7He.h73dV8IQAlk..Q9QpJjshfkGehfFBJn42lHHRHfxYsHq", "user@user.com", "USER");
+			User user2 = new User("admin", "$2a$10$UAKBZzwv.FoM2TMsxADk5eNt.ujBYBuCORSToRp6Ne1vegQRQ0bfG", "user2@user.com", "ADMIN");
+
 
 			userRepository.save(user1);
+			userRepository.save(user2);
 
 
 
 			ForumThread thread1 = threadRepository.findById(1L).orElse(null);
 			if (thread1 != null) {
 				threadRepository.save(thread1);
-				Message comment1 = new Message("Hyvä matka oli tuo reissu Berliinii, upee kaupunki!", thread1, user1);
+				Message comment1 = new Message("Hyvä matka oli tuo reissu Berliinii, upee kaupunki!", thread1, user2);
 				messageRepository.save(comment1);
 			}
 	

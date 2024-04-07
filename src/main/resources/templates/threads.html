@@ -1,45 +1,71 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Category Threads</title>
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <script th:inline="javascript">
+        function confirmDelete() {
+            if (confirm("Are you sure you want to delete this item?")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
 </head>
+
 <body>
 
-<div class="container mt-4">
-    <h1 class="text-center mb-4" th:text="${category.name}">Category Name</h1>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4" th:text="${category.name}">Category Name</h1>
 
-  
 
-    <div th:each="thread : ${category.threads}" class="card mb-3">
-        <div class="card-body">
-            <h5 class="card-title"><a th:href="@{'/thread/' + ${thread.id} + '/comments'}" th:text="${thread.title}">Thread Title</a></h5>
-            <p class="card-text">
-                <span>Date Created: </span>
-                <span th:text="${#temporals.format(thread.startDay, 'dd.MM.yyyy HH:mm:ss')}"></span>
-                <span> | Messages: </span>
-                <span th:text="${thread.messages.size()}"></span>
-                <span> | Created by: </span>
-                <span th:if="${thread.messages != null and thread.messages.size() > 0 and thread.messages[0].user != null}"
-                    th:text="${thread.messages[0].user.username}"></span>
-              <span th:unless="${thread.messages != null and thread.messages.size() > 0 and thread.messages[0].user != null}">
-                  Unknown User
-              </span>
-              <span> |</span>
-                <a th:href="@{'/category/' + ${thread.category.categoryId}}" th:text="${thread.category.name} ?: ''">Category</a>
-                <span> |  </span>
-                <a th:href="@{/deletethread/{id}(id=${thread.id})}" class="btn btn-danger btn-sm">Poista lanka</a>
 
-            </p>
+        <div th:each="thread : ${category.threads}" class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><a th:href="@{'/thread/' + ${thread.id} + '/comments'}"
+                        th:text="${thread.title}">Thread Title</a></h5>
+                <p class="card-text">
+                    <span>Date Created: </span>
+                    <span th:text="${#temporals.format(thread.startDay, 'dd.MM.yyyy HH:mm:ss')}"></span>
+                    <span> | Messages: </span>
+                    <span th:text="${thread.messages.size()}"></span>
+                    <span> | Created by: </span>
+                    <span
+                        th:if="${thread.messages != null and thread.messages.size() > 0 and thread.messages[0].user != null}"
+                        th:text="${thread.messages[0].user.username}"></span>
+                    <span
+                        th:unless="${thread.messages != null and thread.messages.size() > 0 and thread.messages[0].user != null}">
+                        Unknown User
+                    </span>
+                    <span> |</span>
+                    <a th:href="@{'/category/' + ${thread.category.categoryId}}"
+                        th:text="${thread.category.name} ?: ''">Category</a>
+                    <th:block
+                        th:if="${thread.messages != null and thread.messages.size() > 0 and loggedInUsername == thread.messages[0]?.user?.username or #lists.contains(authorities, 'ADMIN')}">
+                        <span> | </span>
+
+                        <a th:href="@{/deletethread/{id}(id=${thread.id})}" class="btn btn-danger btn-sm"
+                            onClick="return confirmDelete()">Poista lanka</a>
+                    </th:block>
+
+                </p>
+
+            </div>
+
         </div>
-    </div>
-<a th:href="@{/matka}" class="btn btn-danger">Takaisin Forumiin</a>
-<a th:href="@{'/addthread?categoryid=' + ${category.categoryId}}" class="btn btn-primary">Add Thread</a>
 
-</div>
+        <div class="d-flex justify-content-between">
+            <a th:href="@{/etusivu}" class="btn btn-success">Takaisin Forumiin</a>
+            <a th:href="@{'/addthread?categoryid=' + ${category.categoryId}}" class="btn btn-primary">Add Thread</a>
+        </div>
+
+    </div>
 
 
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
 
     <title>Add Thread</title>
 </head>
+
 <body>
 
     <div class="container mt-4">
@@ -20,7 +22,7 @@
 
             <div class="form-group">
                 <label for="comment">Comment:</label>
-                <textarea id="comment" name="comment" class="form-control" required></textarea>
+                <textarea id="comment" name="comment" class="form-control" rows="10" required></textarea>
             </div>
 
             <input type="hidden" id="startDay" name="startDay" th:value="${T(java.time.LocalDateTime).now()}">
@@ -29,13 +31,32 @@
             <div class="form-group">
                 <label for="category">Category:</label>
                 <select id="category" name="category" class="form-control">
-                    <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.name}"></option>
+                    <option th:each="category : ${categories}" th:value="${category.categoryId}"
+                        th:text="${category.name}" th:selected="${category.categoryId == categoryId}"
+                        th:disabled="${category.categoryId != categoryId}">
+                        
+                    </option>
+
                 </select>
             </div>
 
-            <button class="btn btn-primary" type="submit">Add Thread</button>
+            <div class="row">
+                <div class="col text-right">
+                    <a th:href="@{/etusivu}" class="btn btn-danger">Takaisin Forumiin</a>
+
+                </div>
+                <div class="col-auto">
+                    <button class="btn btn-primary" type="submit">Add Thread</button>
+
+                </div>
+
+            </div>
         </form>
+
+
     </div>
 
+
 </body>
+
 </html>

@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thread Comments</title>
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <script th:inline="javascript">
+        function confirmDelete() {
+            if (confirm("Are you sure you want to delete this item?")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="container mt-4">
@@ -12,37 +21,44 @@
     <h1 class="text-center mb-4" th:text="${thread.title}">Thread Title</h1>
 
     <div class="card mb-3">
+        
 
         <div class="card-body">
 
             <div th:each="comment : ${comments}">
                 <div class="border-bottom mb-3">
-                    <p><strong>Message Time:</strong> <span th:text="${#temporals.format(comment.messageTime, 'yyyy-MM-dd HH:mm:ss')}">Message Time</span></p>
-                   <strong> <p th:text="${comment?.user?.username}"></p></strong>
-                    <p th:text="${comment.content}">Comment Content</p>
+                    <p><strong><span th:text="${comment?.user?.username}"></span></strong> | Message Time: <span th:text="${#temporals.format(comment.messageTime, 'yyyy-MM-dd HH:mm:ss')}">Message Time</span></p>
 
-                    <a th:href="@{/deletemessage/{id}(id=${comment.messageId})}" class="btn btn-danger">Poista viesti</a>
+                  
+                    <p th:text="${comment.content}">Comment Content</p>
+                    
+                    <th:block th:if="${comment.user.username == loggedInUsername or #lists.contains(authorities, 'ADMIN')}">
+                         <a th:href="@{/deletemessage/{id}(id=${comment.messageId})}" class="btn btn-danger" onClick="return confirmDelete()">Poista viesti</a>
+                        <a th:href="@{/edit/{id}(id=${comment.messageId})}" class="btn btn-primary">Muokkaa</a>
+                    </th:block>  
+                   
                 </div>
+               
             </div>
         </div>
     </div>
 
     <div class="card mb-3">
         <div class="card-body">
-            <h5 class="card-title">Add a Comment</h5>
+            <h5 class="card-title">Lisää kommentti</h5>
             <form th:action="@{/saveComment}" method="post">
                 <input type="hidden" name="id" th:value="${id}" />
                 <div class="form-group">
-                    <label for="content">Comment:</label>
-                    <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                    <label for="content">Kommentti:</label>
+                    <textarea class="form-control" id="content" name="content" rows="8"  required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Add Comment</button>
+                <button type="submit" class="btn btn-primary">Vastaa</button>
             </form>
             
         </div>
         
     </div>
-    <a th:href="@{/matka}" class="btn btn-danger">Takaisin Forumiin</a>
+    <a th:href="@{/etusivu}" class="btn btn-success">Takaisin Forumiin</a>
 
 </div>
 

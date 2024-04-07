@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum</title>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+
+<body>
+
+
+    <div class="container mt-4">
+        <div class="row justify-content-between align-items-center mb-2">
+            <div class="col-auto">
+                <h1 class="mb-0">Forum</h1>
+            </div>
+            <div class="col-auto">
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" value="Kirjaudu ulos" class="btn btn-xs btn-danger btn-sm" />
+                </form>
+            </div>
+        </div>
+        <div class="row justify-content-between align-items-center mb-2">
+            <div class="col-auto">
+                <h5 class="text-center mb-4">Tervetuloa, <strong>
+                <span th:text="${loggedInUsername}"></span></strong>
+                </h5>
+            </div>
+
+            <div class="col-auto">
+                <a th:href="@{/omatviestit}" class="btn btn-primary btn-sm">Omat viestit</a>
+
+            </div>
+        </div>
+
+        <div th:each="category : ${categories}" class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a th:href="@{'/category/' + ${category.categoryId}}" th:text="${category.name}">Thread Title</a>
+                </h5>
+                <span th:text="${category.description}">Thread Description</span>
+                <p><strong>Ketjut:</strong> <span th:text="${category.threads.size()}"></span></p>
+            </div>
+        </div>
+        <a th:href="@{/threads}" class="btn btn-success">Kaikki ketjut</a>
+
+    </div>
+</body>
+
+</html>
