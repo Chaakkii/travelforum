@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Security</title>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
+</head>
+<body>
+    <div class="container">
+        <h2>Rekisteröidy</h2>
+       
+        <form th:action="@{/register}" method="post" th:object="${user}" class="row g-3">
+            <div class="col-md-7">
+                    <label for="username" class="form-label">Käyttäjänimi:</label>
+                    <input type="text" id="username" name="username" class="form-control" size="50" th:field="*{username}" />
+                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></span>
+            </div>
+            <div class="col-md-7">
+                    <label for="password" class="form-label">Salasana:</label>
+                    <input type="password" id="password" name="passwordHash" class="form-control" th:field="*{passwordHash}" />
+                    <span th:if="${#fields.hasErrors('passwordHash')}" th:errors="*{passwordHash}" class="text-danger"></span>
+            </div>
+            <div class="col-md-7">
+                    <label for="email" class="form-label">Sähköposti:</label>
+                    <input type="email" id="email" name="email" class="form-control" th:field="*{email}" />
+                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></span>
+            </div>
+            <input type="hidden" id="role" name="role" value="USER" />
+            <div class="col-md-7">
+                <button type="submit" class="btn btn-primary">Rekisteröidy</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

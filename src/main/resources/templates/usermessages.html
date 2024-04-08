@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>User Messages</title>
@@ -7,7 +7,7 @@
 </head>
 <body class="container">
     
-    <h1> <span th:text="${#strings.isEmpty(username) ? 'Guest' : username}">Guest</span> - viestit</h1>
+    <h1> <span th:text="${#strings.isEmpty(username) ? 'Guest' : username}"></span> - viestit</h1>
     
     <table class="table">
         <thead>
@@ -20,7 +20,7 @@
         </thead>
         <tbody>
             <tr th:each="message : ${messages}">
-                <td><a th:href="@{'/thread/' + ${message.ForumThread.id} + '/comments'}" th:text="${message.ForumThread.title}">Thread Title</a></td>
+                <td><a th:href="@{'/thread/' + ${message.ForumThread.id} + '/comments'}" th:text="${message.ForumThread.title}">Ketjun otsikko</a></td>
                 <td th:text="${message.content}">Sisältö</td>
                 <td th:text="${#temporals.format(message.messageTime, 'dd.MM.yyyy HH:mm:ss')}">Viestin aika</td>
 

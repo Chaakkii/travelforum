@@ -55,14 +55,25 @@ public class MessageController {
     }
 
     @GetMapping("/edit/{id}")
-    public String EditComment(@PathVariable("id") Long id, Model model) {
-        Message comment = messageRepository.findById(id).orElse(null);
-        if (comment != null) {
-            model.addAttribute("comment", comment);
-            return "edit";
-        } else {
+    public String editComment(@PathVariable("id") Long id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUsername = authentication.getName();
+
+        Optional<Message> commentOptional = messageRepository.findById(id);
+        if (!commentOptional.isPresent()) {
             return "redirect:/error";
         }
+
+        Message comment = commentOptional.get();
+
+        if (!comment.getUser().getUsername().equals(loggedInUsername)
+                && !authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
+            model.addAttribute("errorMessage", "Forbidden.");
+            return "error";
+        }
+
+        model.addAttribute("comment", comment);
+        return "edit";
     }
 
     @PostMapping("/saveComment") // tallentaa lähetetyn viestin
@@ -85,15 +96,32 @@ public class MessageController {
     }
 
     @PostMapping("/update/{id}")
-    public String editComment(@PathVariable Long id, @RequestParam String content, @ModelAttribute("message") Message updatedMessage) {
+    public String editComment(@PathVariable Long id, @RequestParam String content,
+            @ModelAttribute("message") Message updatedMessage, Model model) {
         Message isMessage = messageRepository.findById(id).orElse(null);
-            Long threadId = isMessage.getForumThread().getId();
+        Long threadId = isMessage.getForumThread().getId();
 
-    
-        isMessage.setContent(updatedMessage.getContent());
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime createdTime = isMessage.getMessageTime();
+
+        if (currentTime.minusMinutes(30).isAfter(createdTime)) {
+
+            model.addAttribute("editend", true);
+
+            return "redirect:/thread/" + threadId + "/comments?editend=true";
+
+        }
+
+        if (isMessage != null) {
+            isMessage.setContent(updatedMessage.getContent());
+            if (isMessage.getModifiedTime() == null) {
+                isMessage.setModifiedTime(LocalDateTime.now());
+            }
+
+
+
         messageRepository.save(isMessage);
-
-
+        }
         return "redirect:/thread/" + threadId + "/comments";
     }
 
@@ -134,7 +162,7 @@ public class MessageController {
 
             if (!message.getUser().getUsername().equals(loggedInUsername)
                     && !authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
-                        model.addAttribute("errorMessage", "Forbidden.");
+                model.addAttribute("errorMessage", "Forbidden.");
 
                 return "error";
             }
@@ -177,3 +205,4 @@ public class MessageController {
     }
 
 }
+

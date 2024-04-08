@@ -78,10 +78,5 @@ public class CategoryController {
     }       
         return "threads";
 }
-
-    @GetMapping("/login")
-    public String loginForm() {
-        return "login";
-    }
     
 }

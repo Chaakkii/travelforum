@@ -14,7 +14,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Configuration
@@ -33,6 +36,9 @@ public class WebSecurityConfig {
             .requestMatchers(antMatcher("/api")).hasAuthority("ADMIN")
             .requestMatchers(antMatcher("/etusivu")).permitAll()
             .requestMatchers(antMatcher("/threads")).permitAll()
+            .requestMatchers(antMatcher("/register")).permitAll()
+            .requestMatchers(antMatcher("/error")).permitAll()
+
             .requestMatchers(toH2Console()).permitAll()
             .anyRequest().authenticated()
 
@@ -60,4 +66,15 @@ public class WebSecurityConfig {
    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
    }
+
+
+@Configuration
+public class SecurityConfig {
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+
 }

@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Comment</title>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
-    <h2>Edit Comment</h2>
-    <form action="@{/update/{id}(id=${comment.messageId})}" method="post" th:action="@{/update/{id}(id=${comment.messageId})}" th:object="${message}">
-        <input type="hidden" name="id" th:value="${messageId}">
-        <label for="content">Comment:</label><br>
-        <textarea id="content" name="content" rows="10" cols="100" th:text="${comment.content}"></textarea><br><br>
-        <button type="submit">Save</button>
-    </form>
+    <div class="container">
+        <h2 class="text-center">Edit Comment</h2>
+        <form action="@{/update/{id}(id=${comment.messageId})}" method="post" th:action="@{/update/{id}(id=${comment.messageId})}" th:object="${message}">
+            <input type="hidden" name="id" th:value="${messageId}">
+            <div class="form-group">
+                <label for="content">Comment:</label>
+                <textarea id="content" name="content" rows="10" cols="100" th:text="${comment.content}" class="form-control"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
 </body>
 </html>

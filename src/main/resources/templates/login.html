@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
       <head>
         <title>Spring Security</title>
         <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
@@ -9,6 +9,9 @@
         <div class="container-fluid">
             <div class="row justify-content-center align-items-center">
                 <div class="col-md-4">
+                    <div class="alert alert-success" th:if="${success}" >
+                        Rekisteröinti onnistui!
+                    </div>
                     <div class="alert alert-danger" th:if="${param.error}">
                         Väärä käyttäjänimi ja salasana.
                     </div>
@@ -18,6 +21,7 @@
                     <form th:action="@{/login}" method="post">
                         <div>
                             <label> Käyttäjänimi: <input type="text" name="username" class="form-control"/> </label>
+                            
                         </div>
                         <div>
                             <label> Salasana: <input type="password" name="password" class="form-control"/> </label>
@@ -26,7 +30,8 @@
                             <input type="submit" value="Kirjaudu" class="btn btn-primary"/>
                         </div>
                     </form>              
-                    
+                    <p>Eikö sinulla ole vielä käyttäjää? <a th:href="@{/register}">Rekisteröidy tästä</a></p>
+
 
                 </div>
             </div>

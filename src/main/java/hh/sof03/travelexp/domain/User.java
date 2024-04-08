@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 
 @Entity(name="users")
 
@@ -16,12 +18,15 @@ public class User {
     private Long userId;
 
     @Column(name = "username", nullable = false, unique = true)
+    @Size(min=4, max=30, message = "Vähintään 4 merkkiä.")
     private String username;
 
     @Column(name = "password", nullable = false)
+    @Size(min=4, max=1000, message = "Vähintään 4 merkkiä.")
     private String passwordHash;
 
     @Column(name = "email", nullable = false, unique = true)
+    @Email
     private String email;
 
     @Column(name="role", nullable = false)

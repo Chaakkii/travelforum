@@ -17,10 +17,22 @@
                 <h1 class="mb-0">Forum</h1>
             </div>
             <div class="col-auto">
-                <form th:action="@{/logout}" method="post">
-                    <input type="submit" value="Kirjaudu ulos" class="btn btn-xs btn-danger btn-sm" />
-                </form>
+                <th:block th:if="${loggedInUsername == null or loggedInUsername == 'anonymousUser'}">
+                    <form th:action="@{/login}" method="get">
+                        <input type="submit" value="Kirjaudu sisään" class="btn btn-xs btn-primary btn-sm" />
+                    </form>
+                    <form th:action="@{/register}" method="get">
+                        <input type="submit" value="Rekisteröidy" class="btn btn-xs btn-secondary btn-sm" />
+                    </form>
+                </th:block>
+                
+                <th:block th:if="${loggedInUsername != null and loggedInUsername != 'anonymousUser'}">
+                    <form th:action="@{/logout}" method="post">
+                        <input type="submit" value="Kirjaudu ulos" class="btn btn-xs btn-danger btn-sm" />
+                    </form>
+                </th:block>
             </div>
+            
         </div>
         <div class="row justify-content-between align-items-center mb-2">
             <div class="col-auto">

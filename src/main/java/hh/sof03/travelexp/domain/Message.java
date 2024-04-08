@@ -26,6 +26,9 @@ public class Message {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime messageTime;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime modifiedTime;
+
     @ManyToOne
     private ForumThread forumThread;
 
@@ -37,6 +40,7 @@ public class Message {
         this.content = content;
         this.forumThread = forumThread;
         this.messageTime = LocalDateTime.now();
+        this.modifiedTime = null;
         this.user = user;
 
     }
@@ -83,10 +87,20 @@ public class Message {
         this.user = user;
     }
 
+     public LocalDateTime getModifiedTime() {
+        return modifiedTime;
+    }
+
+    public void setModifiedTime(LocalDateTime modifiedTime) {
+        this.modifiedTime = modifiedTime;
+    }
+
     @Override
     public String toString() {
         return "Message [content=" + content + ", messageTime=" + messageTime + ", user=" + user + "]";
     }
+
+   
 
     
     
