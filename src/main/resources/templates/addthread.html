@@ -23,6 +23,7 @@
             <div class="form-group">
                 <label for="comment">Comment:</label>
                 <textarea id="comment" name="comment" class="form-control" rows="10" required></textarea>
+
             </div>
 
             <input type="hidden" id="startDay" name="startDay" th:value="${T(java.time.LocalDateTime).now()}">

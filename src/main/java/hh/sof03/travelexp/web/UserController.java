@@ -56,15 +56,12 @@ public class UserController {
         } else {
 
         redirectAttributes.addFlashAttribute("success", true);
-
     
         String encodedPassword = passwordEncoder.encode(user.getPasswordHash());
         user.setPasswordHash(encodedPassword);
         user.setRole("USER");
 
         userRepository.save(user);
-
-
 
         return "redirect:/login";
 

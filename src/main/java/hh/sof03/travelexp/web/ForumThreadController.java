@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
 import hh.sof03.travelexp.domain.CategoryRepository;
 import hh.sof03.travelexp.domain.ForumThread;
@@ -26,6 +27,7 @@ import hh.sof03.travelexp.domain.MessageRepository;
 import hh.sof03.travelexp.domain.ThreadRepository;
 import hh.sof03.travelexp.domain.User;
 import hh.sof03.travelexp.domain.UserRepository;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,7 +67,6 @@ public class ForumThreadController {
 
         model.addAttribute("authorities", authorities);
         model.addAttribute("loggedInUsername", loggedInUsername);
-
         model.addAttribute("threads", threads);
 
         return "home"; // home.html
@@ -110,9 +111,15 @@ public class ForumThreadController {
         return "addthread";
     }
 
-    @PostMapping("/add")
-    public String addNewThread(@ModelAttribute("thread") ForumThread forumThread,
-            @RequestParam("comment") String commentContent, Authentication authentication) {
+    @PostMapping("/add") //Tähän pitäisi saada bindingResult etc + templateen ne virhetulostukset (addthread).
+    public String addNewThread(@Valid @ModelAttribute("thread") ForumThread forumThread,
+            @RequestParam("comment") String commentContent, Authentication authentication, BindingResult bindingResult, Model model) {
+            
+                if (bindingResult.hasErrors()) {
+
+                    return "addthread";
+               } else {
+        
 
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
@@ -134,7 +141,7 @@ public class ForumThreadController {
         }
         return "redirect:/threads";
     }
-
+            }
     @GetMapping("/deletethread/{id}")
     public String deleteThread(@PathVariable Long id, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

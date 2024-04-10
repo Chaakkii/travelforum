@@ -118,12 +118,21 @@ public class MessageController {
                 isMessage.setModifiedTime(LocalDateTime.now());
             }
 
-
-
         messageRepository.save(isMessage);
         }
+
+        if (isMessage.getModifiedTime() != null) {
+            isMessage.setContent(updatedMessage.getContent());
+            isMessage.setModifiedTime(LocalDateTime.now());
+
+        }
+
+        messageRepository.save(isMessage);
         return "redirect:/thread/" + threadId + "/comments";
+
+      
     }
+
 
     @GetMapping("/comments/{id}") // ehkä turha, testimielessä silloin.
     public String showComments(@PathVariable("id") Long id, Model model) {
