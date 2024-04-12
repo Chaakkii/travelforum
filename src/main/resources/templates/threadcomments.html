@@ -22,7 +22,7 @@
     <div class="container mt-4">
 
 
-        <h1 class="text-center mb-4" th:text="${thread.title}">Thread Title</h1>
+        <h1 class="text-center mb-4" th:text="${thread.title}"></h1>
 
 
         <div class="card mb-3">
@@ -35,7 +35,7 @@
                 <div th:each="comment : ${comments}">
                     <div class="border-bottom mb-3">
                         <p>
-                            <strong><span th:text="${comment?.user?.username}"></span></strong> | Message Time: <span
+                            <strong><span th:text="${comment?.user?.username}"></span></strong> | Aika: <span
                                 th:text="${#temporals.format(comment.messageTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
                             <strong>
                                 <span th:if="${comment.modifiedTime != null}"> | Muokattu: </span>
@@ -48,9 +48,9 @@
 
                         <th:block
                             th:if="${comment.user.username == loggedInUsername or #lists.contains(authorities, 'ADMIN')}">
-                            <a th:href="@{/deletemessage/{id}(id=${comment.messageId})}" class="btn btn-danger"
+                            <a th:href="@{/deletemessage/{id}(id=${comment.messageId})}" class="btn btn-danger btn-sm"
                                 onClick="return confirmDelete()">Poista viesti</a>
-                            <a th:href="@{/edit/{id}(id=${comment.messageId})}" class="btn btn-primary">Muokkaa</a>
+                            <a th:href="@{/edit/{id}(id=${comment.messageId})}" class="btn btn-primary btn-sm">Muokkaa</a>
                         </th:block>
 
 
@@ -82,6 +82,7 @@
 
                 </div>
                 <a th:href="@{/etusivu}" class="btn btn-success">Takaisin Forumiin</a>
+
 
 
             </div>

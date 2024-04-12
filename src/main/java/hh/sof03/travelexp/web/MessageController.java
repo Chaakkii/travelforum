@@ -1,9 +1,6 @@
 package hh.sof03.travelexp.web;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,21 +36,6 @@ public class MessageController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/commentForm/{id}")
-    public String showEditCommentForm(@PathVariable("id") Long id, Model model) {
-        // Hae kommentti tietokannasta
-        Message comment = messageRepository.findById(id).orElse(null);
-        if (comment != null) {
-            // Lisää kommentti malliin
-            model.addAttribute("comment", comment);
-            return "commentForm";
-        } else {
-            // Kommenttia ei löytynyt, ohjaa käyttäjä virhesivulle tai tee jotain muuta
-            return "redirect:/error";
-        }
-
-    }
-
     @GetMapping("/edit/{id}")
     public String editComment(@PathVariable("id") Long id, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -61,22 +43,23 @@ public class MessageController {
 
         Optional<Message> commentOptional = messageRepository.findById(id);
         if (!commentOptional.isPresent()) {
-            return "redirect:/error";
+            model.addAttribute("errorMessage", "Viestiä ei löytynyt.");
+            return "error";
         }
 
         Message comment = commentOptional.get();
 
         if (!comment.getUser().getUsername().equals(loggedInUsername)
                 && !authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
-            model.addAttribute("errorMessage", "Forbidden.");
-            return "error";
+                    model.addAttribute("errorMessage", "Sinulla ei ole oikeuksia tähän toimintoon.");
+                    return "error";
         }
 
         model.addAttribute("comment", comment);
         return "edit";
     }
 
-    @PostMapping("/saveComment") // tallentaa lähetetyn viestin
+    @PostMapping("/saveComment")
     public String saveComment(@RequestParam("id") Long id, @RequestParam String content,
             Authentication authentication) {
         ForumThread thread = threadRepository.findById(id).orElse(null);
@@ -133,28 +116,6 @@ public class MessageController {
       
     }
 
-
-    @GetMapping("/comments/{id}") // ehkä turha, testimielessä silloin.
-    public String showComments(@PathVariable("id") Long id, Model model) {
-        ForumThread thread = threadRepository.findById(id).orElse(null);
-        if (thread != null) {
-            List<Message> comments = thread.getMessages();
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            List<String> formattedMessageTimes = new ArrayList<>();
-            for (Message comment : comments) {
-                LocalDateTime messageTime = comment.getMessageTime();
-                String formattedMessageTime = messageTime.format(formatter);
-                formattedMessageTimes.add(formattedMessageTime);
-            }
-
-            model.addAttribute("thread", thread);
-            model.addAttribute("comments", comments);
-            model.addAttribute("formattedMessageTimes", formattedMessageTimes);
-        }
-        return "comments";
-    }
-
     @GetMapping("/deletemessage/{id}")
     public String deleteComment(@PathVariable("id") Long messageId, Model model) {
 
@@ -171,9 +132,8 @@ public class MessageController {
 
             if (!message.getUser().getUsername().equals(loggedInUsername)
                     && !authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
-                model.addAttribute("errorMessage", "Forbidden.");
-
-                return "error";
+                        model.addAttribute("errorMessage", "Sinulla ei ole oikeuksia tähän toimintoon.");
+                        return "error";
             }
 
             messageRepository.deleteById(messageId);
@@ -190,27 +150,6 @@ public class MessageController {
         }
 
         return "redirect:/thread/" + threadId + "/comments";
-    }
-
-    @GetMapping("/omatviestit")
-    public String findUserMessages(Model model, Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();
-            User user = userRepository.findByUsername(username);
-            if (user != null) {
-                List<Message> userMessages = messageRepository.findByUser(user);
-                model.addAttribute("messages", userMessages);
-                model.addAttribute("username", username);
-                model.addAttribute("ForumThread", userMessages);
-                model.addAttribute("id", userMessages);
-
-            } else {
-                model.addAttribute("messages", Collections.emptyList());
-            }
-        } else {
-            model.addAttribute("messages", Collections.emptyList());
-        }
-        return "usermessages";
     }
 
 }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Käyttäjän tiedot</title>
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body class="container">
+    <div>
+        <h1 class="mt-5">Käyttäjän tiedot</h1>
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Käyttäjänimi: <span th:text="${user.username}"></span></h5>
+                <p class="card-text">Sähköposti: <span th:text="${user.email}"></span></p>
+                <p class="card-text">Rooli: <span th:text="${user.role}"></span></p>
+            </div>
+        </div>
+    </div>
+
+
+    <div>
+        <h1 class="mt-5"><span th:text="${#strings.isEmpty(username) ? 'Guest' : username}"></span> - käyttäjän viestit</h1>
+        <table class="table">
+            <thead>
+                <tr>                
+                    <th>Ketjun otsikko</th>
+                    <th>Viesti</th>
+                    <th>Aika</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="message : ${messages}">
+                    <td><a th:href="@{'/thread/' + ${message.ForumThread.id} + '/comments'}" th:text="${message.ForumThread.title}">Ketjun otsikko</a></td>
+                    <td th:text="${message.content}">Sisältö</td>
+                    <td th:text="${#temporals.format(message.messageTime, 'dd.MM.yyyy HH:mm:ss')}">Viestin aika</td>
+                </tr>
+            </tbody>
+        </table>
+        <a th:href="@{/etusivu}" class="btn btn-success">Takaisin Forumiin</a>
+    </div>
+</body>
+</html>

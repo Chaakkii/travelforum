@@ -6,6 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum</title>
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" />
+    <script th:inline="javascript">
+        function confirmDelete() {
+            if (confirm("Haluatko varmasti poistaa tämän?")) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -42,10 +51,14 @@
                 <span th:text="${loggedInUsername}"></span></strong>
                 </h5>
             </div>
+            
+            <th:block th:if="${loggedInUsername != null and loggedInUsername != 'anonymousUser'}">
 
             <div class="col-auto">
-                <a th:href="@{/omatviestit}" class="btn btn-primary btn-sm">Omat viestit</a>
+                <a th:href="@{/userinfo}" class="btn btn-primary btn-sm">Omat tiedot</a>
             </div>
+            </th:block>
+           
             <th:block th:if="${#lists.contains(authorities, 'ADMIN')}">
                     <form th:action="@{/addcategory}" method="get">
                         <input type="submit" value="Uusi kategoria" class="btn btn-xs btn-secondary btn-sm" />
@@ -56,10 +69,18 @@
         <div th:each="category : ${categories}" class="card mb-3">
             <div class="card-body">
                 <h5 class="card-title">
-                    <a th:href="@{'/category/' + ${category.categoryId}}" th:text="${category.name}">Thread Title</a>
+                    <a th:href="@{'/category/' + ${category.categoryId}}" th:text="${category.name}"></a>
                 </h5>
-                <span th:text="${category.description}">Thread Description</span>
+                <span th:text="${category.description}"></span>
                 <p><strong>Ketjut:</strong> <span th:text="${category.threads.size()}"></span></p>
+                
+                <th:block th:if="${#lists.contains(authorities, 'ADMIN')}">
+                <form th:action="@{'/deletecategory/' + ${category.categoryId}}" method="get">
+                    <input type="hidden" name="categoryId" th:value="${category.categoryId}" />
+                    <input type="submit" value="Poista kategoria" class="btn btn-xs btn-danger btn-sm" onClick="return confirmDelete()"/>
+                </form>
+                </th:block>
+                
             </div>
         </div>
         <a th:href="@{/threads}" class="btn btn-success">Kaikki ketjut</a>

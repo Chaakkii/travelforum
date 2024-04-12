@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
 import hh.sof03.travelexp.domain.Category;
 import hh.sof03.travelexp.domain.CategoryRepository;
 import hh.sof03.travelexp.domain.ForumThread;
+import jakarta.validation.Valid;
 
 
 @Controller
@@ -51,7 +53,7 @@ public class CategoryController {
 
         model.addAttribute("categories", categoryRepository.findAll());
 
-        return "etusivu"; // etusivu.html
+        return "etusivu"; 
     }
 
     @GetMapping(value = "/category/{categoryId}")
@@ -90,37 +92,44 @@ public class CategoryController {
 }
 
     @GetMapping(value="/addcategory")
-    public String addCategory(Model model) {
+    public String addCategory(Model model, Authentication authentication) {
+       
+        if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
+
+            model.addAttribute("errorMessage", "Sinulla ei ole oikeuksia tähän toimintoon.");
+            return "error";
+        } else {
         model.addAttribute("category", new Category());
 
         return "newcategory";
     }
     
-    @PostMapping(value ="/addcategory")
-    public String addCategoryPost(@ModelAttribute("category") Category category, Authentication authentication, Model model, @RequestParam("name") String name, @RequestParam("description") String description) {
-       
-        if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
-
-        model.addAttribute("errorMessage", "Forbidden.");
+}
+@PostMapping(value = "/addcategory")
+public String addCategoryPost(@Valid @ModelAttribute("category") Category category, BindingResult bindingResult, Authentication authentication, Model model, @RequestParam("name") String name, @RequestParam("description") String description) {
+    if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
+        model.addAttribute("errorMessage", "Sinulla ei ole oikeuksia tähän toimintoon.");
         return "error";
-    } else {
-        Category cat = new Category();
-
-        cat.setName(name);
-        cat.setDescription(description);
-
-        categoryRepository.save(cat);
-
-        return"redirect:/etusivu";
     }
+
+    if (bindingResult.hasErrors()) {
+        return "newcategory";
     }
+
+    Category cat = new Category();
+    cat.setName(name);
+    cat.setDescription(description);
+    categoryRepository.save(cat);
+    return "redirect:/etusivu";
+}
+
 
     @GetMapping(value = "/deletecategory/{categoryid}")
     public String deleteCategory(@PathVariable("categoryid") Long categoryId, Authentication authentication, Model model){
 
     if (!authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
 
-        model.addAttribute("errorMessage", "Forbidden.");
+        model.addAttribute("errorMessage", "Sinulla ei ole oikeuksia.");
         return "error";
     } else {
 

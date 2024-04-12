@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
+import hh.sof03.travelexp.domain.Category;
 import hh.sof03.travelexp.domain.CategoryRepository;
 import hh.sof03.travelexp.domain.ForumThread;
 import hh.sof03.travelexp.domain.Message;
@@ -27,10 +28,12 @@ import hh.sof03.travelexp.domain.MessageRepository;
 import hh.sof03.travelexp.domain.ThreadRepository;
 import hh.sof03.travelexp.domain.User;
 import hh.sof03.travelexp.domain.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 
@@ -69,7 +72,7 @@ public class ForumThreadController {
         model.addAttribute("loggedInUsername", loggedInUsername);
         model.addAttribute("threads", threads);
 
-        return "home"; // home.html
+        return "allthreads";
     }
 
     @GetMapping("/thread/{id}/comments")
@@ -99,49 +102,55 @@ public class ForumThreadController {
 
             return "threadcomments";
         }
-
+        model.addAttribute("errorMessage", "Jokin meni vikaan.");
         return "error";
     }
 
     @GetMapping(value = "/addthread")
-    public String showAddThreadForm(Model model, @RequestParam(name = "categoryid") Long categoryId) {
-        model.addAttribute("thread", new Thread());
+    public String showAddThreadForm(@ModelAttribute("forumthread") ForumThread forumThread, Model model,
+            @RequestParam(name = "categoryid") Long categoryId, HttpSession session) {
         model.addAttribute("categories", categoryRepository.findAll());
         model.addAttribute("categoryId", categoryId);
         return "addthread";
     }
 
-    @PostMapping("/add") //Tähän pitäisi saada bindingResult etc + templateen ne virhetulostukset (addthread).
-    public String addNewThread(@Valid @ModelAttribute("thread") ForumThread forumThread,
-            @RequestParam("comment") String commentContent, Authentication authentication, BindingResult bindingResult, Model model) {
-            
-                if (bindingResult.hasErrors()) {
-
-                    return "addthread";
-               } else {
-        
-
-        if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();
-            User user = userRepository.findByUsername(username);
-
-            Message comment = new Message();
-
-            comment.setContent(commentContent);
-            comment.setMessageTime(LocalDateTime.now());
-            comment.setUser(user);
-
-            Message savedComment = messageRepository.save(comment);
-
-            ForumThread newThread = forumThread;
-            newThread.addMessage(savedComment);
-
-            threadRepository.save(newThread);
-
+    @PostMapping("/addthread")
+    public String addNewThread(@Valid @ModelAttribute("forumthread") ForumThread forumThread,
+            BindingResult bindingResult, @RequestParam("title") String title,
+            @RequestParam("comment") String commentContent, @RequestParam("categoryId") Long categoryId,
+            Authentication authentication, Model model, RedirectAttributes redirectAttributes) {
+        if (commentContent.length() < 1 || commentContent.length() > 3000) {
+            bindingResult.rejectValue("messages", "error.comment", "Ei tyhjiä viestejä.");
         }
-        return "redirect:/threads";
-    }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("forumthread", forumThread);
+            model.addAttribute("categoryId", categoryId);
+            model.addAttribute("categories", categoryRepository.findAll());
+            return "addthread";
+        } else {
+            if (authentication != null && authentication.isAuthenticated()) {
+                String username = authentication.getName();
+                User user = userRepository.findByUsername(username);
+
+                Message comment = new Message();
+                comment.setContent(commentContent);
+                comment.setMessageTime(LocalDateTime.now());
+                comment.setUser(user);
+
+                Message savedComment = messageRepository.save(comment);
+
+                Category category = categoryRepository.findById(categoryId).orElse(null);
+                if (category != null) {
+                    forumThread.setCategory(category);
+                    forumThread.addMessage(savedComment);
+                    threadRepository.save(forumThread);
+                }
             }
+            return "redirect:/threads";
+        }
+    }
+
     @GetMapping("/deletethread/{id}")
     public String deleteThread(@PathVariable Long id, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -152,24 +161,24 @@ public class ForumThreadController {
         if (threadOptional.isPresent()) {
             ForumThread thread = threadOptional.get();
 
-            Optional<Message> messageOptional = messageRepository.findByForumThread(thread);
+            List<Message> messages = messageRepository.findAllByForumThread(thread);
 
-            if (messageOptional.isPresent()) {
-                Message message = messageOptional.get();
-
-                if (!message.getUser().getUsername().equals(loggedInUsername)
+            Message firstMessage = messages.get(0);
+         
+                if (!firstMessage.getUser().getUsername().equals(loggedInUsername)
                         && !authentication.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) {
-
-                    model.addAttribute("errorMessage", "Forbidden.");
+                    model.addAttribute("errorMessage", "Sinulla ei ole oikeuksia tähän toimintoon.");
                     return "error";
-                }
-            } else {
-
+                
             }
 
+            messageRepository.deleteAll(messages);
+
             threadRepository.deleteById(id);
+
             return "redirect:/etusivu";
         } else {
+            model.addAttribute("errorMessage", "Odottamaton virhe.");
             return "error";
         }
     }

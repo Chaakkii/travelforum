@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Errori</title>
+    <title>Error</title>
     <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" />
 </head>
 <body>
@@ -10,8 +10,10 @@
             <div class="col-md-6">
                 <div class="alert alert-danger" th:if="${errorMessage}">
                     <strong>Error:</strong> <span th:text="${errorMessage}"></span>
-                    <p>Hyvä yritys :D</p>
+                    
                 </div>
+                <a th:href="@{/etusivu}" class="btn btn-danger">Takaisin Forumiin</a>
+
             </div>
         </div>
     </div>

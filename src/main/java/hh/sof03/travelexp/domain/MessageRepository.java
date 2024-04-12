@@ -11,7 +11,7 @@ public interface MessageRepository extends CrudRepository<Message, Long> {
 
     List<Message> findByForumThreadId(Optional<ForumThread> threadOptional);
 
-    Optional<Message> findByForumThread(ForumThread thread);
+    List<Message> findAllByForumThread(ForumThread thread);
 
 
 }
