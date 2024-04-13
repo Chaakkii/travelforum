@@ -10,10 +10,11 @@
     <div class="container">
         <h2 class="text-center">Edit Comment</h2>
         <form action="@{/update/{id}(id=${comment.messageId})}" method="post" th:action="@{/update/{id}(id=${comment.messageId})}" th:object="${message}">
-            <input type="hidden" name="id" th:value="${messageId}">
+            <input type="hidden" name="id" th:value="${message.messageId}">
             <div class="form-group">
                 <label for="content">Comment:</label>
-                <textarea id="content" name="content" rows="10" cols="100" th:text="${comment.content}" class="form-control"></textarea>
+                <textarea id="content" name="content" rows="10" cols="100" th:text="${comment.content}" class="form-control" required></textarea>
+                <span class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></span>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
         </form>

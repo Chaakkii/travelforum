@@ -117,10 +117,10 @@ public class ForumThreadController {
     @PostMapping("/addthread")
     public String addNewThread(@Valid @ModelAttribute("forumthread") ForumThread forumThread,
             BindingResult bindingResult, @RequestParam("title") String title,
-            @RequestParam("comment") String commentContent, @RequestParam("categoryId") Long categoryId,
+            @RequestParam("content") String commentContent, @RequestParam("categoryId") Long categoryId,
             Authentication authentication, Model model, RedirectAttributes redirectAttributes) {
-        if (commentContent.length() < 1 || commentContent.length() > 3000) {
-            bindingResult.rejectValue("messages", "error.comment", "Ei tyhjiä viestejä.");
+        if (commentContent.length() > 1 || commentContent.length() < 3000) {
+            bindingResult.rejectValue("messages", "error.content", "Ei tyhjiä viestejä. Korkeintaan 3000 merkkiä.");
         }
 
         if (bindingResult.hasErrors()) {
@@ -133,12 +133,12 @@ public class ForumThreadController {
                 String username = authentication.getName();
                 User user = userRepository.findByUsername(username);
 
-                Message comment = new Message();
-                comment.setContent(commentContent);
-                comment.setMessageTime(LocalDateTime.now());
-                comment.setUser(user);
+                Message content = new Message();
+                content.setContent(commentContent);
+                content.setMessageTime(LocalDateTime.now());
+                content.setUser(user);
 
-                Message savedComment = messageRepository.save(comment);
+                Message savedComment = messageRepository.save(content);
 
                 Category category = categoryRepository.findById(categoryId).orElse(null);
                 if (category != null) {

@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import hh.sof03.travelexp.domain.MessageRepository;
 import hh.sof03.travelexp.domain.ThreadRepository;
 import hh.sof03.travelexp.domain.User;
 import hh.sof03.travelexp.domain.UserRepository;
+import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -56,6 +58,8 @@ public class MessageController {
         }
 
         model.addAttribute("comment", comment);
+        model.addAttribute("message", new Message());
+
         return "edit";
     }
 
@@ -79,11 +83,10 @@ public class MessageController {
     }
 
     @PostMapping("/update/{id}")
-    public String editComment(@PathVariable Long id, @RequestParam String content,
-            @ModelAttribute("message") Message updatedMessage, Model model) {
+    public String editComment(@Valid @PathVariable Long id, @RequestParam String content, @ModelAttribute("message") Message updatedMessage, BindingResult bindingResult, Model model) {
         Message isMessage = messageRepository.findById(id).orElse(null);
         Long threadId = isMessage.getForumThread().getId();
-
+        
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDateTime createdTime = isMessage.getMessageTime();
 

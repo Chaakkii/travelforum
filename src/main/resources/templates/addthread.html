@@ -29,7 +29,7 @@
 
             <div class="form-group">
                 <label for="comment">Viesti:</label>
-                <textarea id="comment" name="comment" class="form-control" rows="10" required></textarea>
+                <textarea id="content" name="content" class="form-control" rows="10" required></textarea>
                 <span th:if="${#fields.hasErrors('messages')}" th:errors="*{messages}" class="text-danger"></span>
 
             </div>
