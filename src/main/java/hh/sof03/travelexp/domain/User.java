@@ -1,5 +1,7 @@
 package hh.sof03.travelexp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +25,7 @@ public class User {
 
     @Column(name = "password", nullable = false)
     @Size(min=4, max=1000, message = "Vähintään 4 merkkiä.")
+    //@JsonIgnore rajoitettu nyt pääsy vain adminille, joten voi nähdä.
     private String passwordHash;
 
     @Column(name = "email", nullable = false, unique = true)

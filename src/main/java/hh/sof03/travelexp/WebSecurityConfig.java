@@ -30,12 +30,12 @@ public class WebSecurityConfig {
         http
         .authorizeHttpRequests(authorize -> authorize
             .requestMatchers(antMatcher("/css/**")).permitAll()
-            .requestMatchers(antMatcher("/api")).hasAuthority("ADMIN")
+            .requestMatchers(antMatcher("/bootstrap/**")).permitAll()
+            .requestMatchers(antMatcher("/users")).hasAuthority("ADMIN")
             .requestMatchers(antMatcher("/etusivu")).permitAll()
             .requestMatchers(antMatcher("/threads")).permitAll()
             .requestMatchers(antMatcher("/register")).permitAll()
             .requestMatchers(antMatcher("/error")).permitAll()
-
             .requestMatchers(toH2Console()).permitAll()
             .anyRequest().authenticated()
 

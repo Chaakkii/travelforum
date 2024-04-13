@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
@@ -34,11 +35,12 @@ public class ForumThread {
     private LocalDateTime startDay;
 
     @ManyToOne
-    @JsonIgnoreProperties("threads")
     @JoinColumn(name = "categoryId")
+    @JsonIgnore
     private Category category;
 
     @OneToMany(mappedBy = "forumThread", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("forumThread")
     private List<Message> messages;
 
     public ForumThread(String title, LocalDateTime startDay, Category category) {
