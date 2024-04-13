@@ -102,6 +102,11 @@ public class TravelexpApplication {
 				log.info(message.toString());
 			}
 
+			log.info("Fetch all users");
+			for(User user : userRepository.findAll()) {
+				log.info(user.toString());
+			}
+
 
 			
 

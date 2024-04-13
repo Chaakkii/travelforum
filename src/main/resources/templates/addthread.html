@@ -36,9 +36,6 @@
 
             <input type="hidden" id="startDay" name="startDay" th:value="${T(java.time.LocalDateTime).now()}">
 
-
-
-
             <div class="form-group">
                 <label for="category">Kategoria:</label>
                 <select id="category" name="category" class="form-control">
@@ -47,7 +44,7 @@
                         th:disabled="${category.categoryId != categoryId}">
                     </option>
                 </select>
-                
+
             </div>
 
             <div class="row">
