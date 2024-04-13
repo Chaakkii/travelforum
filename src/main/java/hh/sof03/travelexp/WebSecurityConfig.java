@@ -37,6 +37,7 @@ public class WebSecurityConfig {
             .requestMatchers(antMatcher("/register")).permitAll()
             .requestMatchers(antMatcher("/error")).permitAll()
             .requestMatchers(toH2Console()).permitAll()
+            .requestMatchers("/").permitAll()
             .anyRequest().authenticated()
 
         )

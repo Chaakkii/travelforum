@@ -95,4 +95,8 @@ public String userProfile(Model model, Authentication authentication) {
     return "error";
 }
 
+@GetMapping("/")
+    public String home() {
+        return "redirect:/etusivu";
+    }
 }
