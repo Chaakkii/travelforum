@@ -119,7 +119,7 @@ public class ForumThreadController {
             BindingResult bindingResult, @RequestParam("title") String title,
             @RequestParam("content") String commentContent, @RequestParam("categoryId") Long categoryId,
             Authentication authentication, Model model, RedirectAttributes redirectAttributes) {
-        if (commentContent.length() > 1 || commentContent.length() < 3000) {
+        if (commentContent.length() < 1 || commentContent.length() > 3000) {
             bindingResult.rejectValue("messages", "error.content", "Ei tyhjiä viestejä. Korkeintaan 3000 merkkiä.");
         }
 
