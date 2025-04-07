@@ -1,3 +1,1 @@
-Link to simple travelforum:
-
-travelforum-production.up.railway.app 
+Tutustu [Simple Travel Forum](https://travelforum-production.up.railway.app) -sivustoon ja jaa matkatarinasi!
